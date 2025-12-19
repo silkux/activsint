@@ -16,18 +16,31 @@ Built with an **Advanced Tactical aesthetic**, it transforms raw data into a tac
 -   **Mobilization Simulator**: Our "If/Then" logic helps you understand where your presence can have the most impact (e.g., *Protests in your city*).
 -   **Vegan Advocacy Data**: Specific tracking of animal welfare incidents to coordinate rapid responses for the voiceless.
 
-## 🚀 Features
--   **3D Geospatial Engine**: Powered by `react-globe.gl` and Three.js (Optimized for Low-RAM usage).
--   **Real-Time Data Feed**: Live connection to NASA's EONET and Global RSS News Feeds.
--   **Tactical UI**: Custom Neon interface with CRT scanlines, holographic grids, and 'Orbitron' typography.
--   **"Where Are You" Intelligence**: Geolocation features to calibrate the activist map to your physical location.
--   **Performance Optimized**: Capable of rendering 500+ live datasets on mobile and desktop without browser saturation.
+## 🧠 Intelligent Activism Protocol (IAP) // Vegan Defense
+**ACTIVSINT** operates on the "Intelligent Activism" principle: **Data is the first line of defense.**
 
-## 🛠️ Technology Stack
--   **Core**: React 19, TypeScript, Vite
--   **3D/Viz**: React Globe GL, Three.js, D3 Scale
--   **Styling**: TailwindCSS (v4), Framer Motion (Animations)
--   **Intelligent Layer**: Geolocation API, RSS Parsing, Weaviate (Planned)
+### 🌿 The Vegan Approach
+We utilize technology to amplify the voice of the voiceless.
+1.  **Cruelty-Free Code**: Our development lifecycle prioritizes energy efficiency (Green Computing) to minimize the carbon footprint of digital activism.
+2.  **Ethical Data Sourcing**: We aggregate data from non-intrusive public signals (NASA, GDELT, Verified RSS) to track:
+    -   *Illegal Poaching Vectors*
+    -   *Factory Farming Expansion*
+    -   *Habitat Destruction Events*
+3.  **Mobilization Vectors**: The system aligns user geolocation with nearby advocacy events, turning *passive observation* into *active defense*.
+
+## ⚙️ Technical Architecture (Deep Dive)
+### 🖥️ Client-Side Optimized Core
+-   **Engine**: `react-globe.gl` (Three.js wrapper) with aggressive **Occlusion Culling** and **Geometry Instancing** to maintain 60FPS even with 500+ nodes.
+-   **State Management**: React 19 optimized hooks (`useMemo`, `useCallback`) ensuring zero unnecessary re-renders during high-frequency data updates.
+-   **Bundle Strategy**: Vite-powered code splitting separates the 'Tactical HUD' from the '3D Core', allowing for instant interactions while assets stream in.
+
+### 📡 Data Ingestion Pipeline
+-   **EONET Proxy**: Serverless edge functions (`/api/rss`) scrub and normalize NASA geospatial data before it hits the client.
+-   **Vector Search (Upcoming)**: Integration with **Weaviate** to allow semantic queries like *"Show me where deforestation overlaps with cattle ranching"* using localized ML models.
+
+### 🛡️ Security & Privacy
+-   **Client-Side Geolocation**: User location data is processed ephemeral in-memory and **NEVER** stored or transmitted to a central server.
+-   **Anonymized Agents**: The "Activist Layer" simulations use fully anonymized, randomized coordinate jitter to protect the identity of simulated field agents.
 
 ## ⚡ Deployment
 ### Vercel / Netlify

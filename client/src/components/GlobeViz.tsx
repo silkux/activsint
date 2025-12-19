@@ -106,11 +106,23 @@ const GlobeViz: React.FC = () => {
         return () => { mounted = false; };
     }, []);
 
-    // Merge Events and Activists for rendering
-    const pointsData = React.useMemo(() => [...data, ...activists], [data, activists]);
+    const [selectedEvent, setSelectedEvent] = useState<any>(null);
+    const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
-    // Rings only for critical events (Magenta) and fresh activists (Green)
-    const ringsData = React.useMemo(() => [...data, ...activists], [data, activists]);
+    // Filter Logic
+    const [showEvents, setShowEvents] = useState(true);
+    const [showActivists, setShowActivists] = useState(true);
+
+    // Merge Events and Activists based on active filters
+    const pointsData = React.useMemo(() => {
+        let points: any[] = [];
+        if (showEvents) points = [...points, ...data];
+        if (showActivists) points = [...points, ...activists];
+        return points;
+    }, [data, activists, showEvents, showActivists]);
+
+    // Rings follow the same logic
+    const ringsData = React.useMemo(() => pointsData, [pointsData]);
 
     // INTELLIGENT LOCATION HANDLER
     const handleLocateUser = () => {
@@ -261,6 +273,22 @@ const GlobeViz: React.FC = () => {
                             ? "ANALYSIS COMPLETE: 3 Vegan Rallies detected within 50km of your sector. Recommendation: DEPLOY."
                             : "Waiting for geolocation... System unable to suggest local IRL actions."}
                     </p>
+                </div>
+
+                {/* Filter / Tactical Controls */}
+                <div className="mb-4 flex gap-2">
+                    <button
+                        onClick={() => setShowEvents(!showEvents)}
+                        className={`flex-1 py-1 text-[10px] font-bold uppercase tracking-wider border ${showEvents ? 'bg-primary/20 border-primary text-primary' : 'border-white/10 text-white/40'} transition-all`}
+                    >
+                        [ EVENTS ]
+                    </button>
+                    <button
+                        onClick={() => setShowActivists(!showActivists)}
+                        className={`flex-1 py-1 text-[10px] font-bold uppercase tracking-wider border ${showActivists ? 'bg-green-500/20 border-green-500 text-green-400' : 'border-white/10 text-white/40'} transition-all`}
+                    >
+                        [ AGENTS ]
+                    </button>
                 </div>
 
                 <div className="text-xs text-white/50 font-mono mt-1 border-t border-white/10 pt-2 flex justify-between">
