@@ -3,12 +3,16 @@ import Globe, { GlobeMethods } from 'react-globe.gl';
 import { fetchOsintData, OsintEvent } from '@/services/osintData';
 import { scaleLinear } from 'd3-scale';
 import AskPanel from './AskPanel';
+import EventOverlay from './EventOverlay';
+import { Locate, Radio } from 'lucide-react';
 
 const GlobeViz: React.FC = () => {
     const globeEl = useRef<GlobeMethods | undefined>(undefined);
     const [data, setData] = useState<OsintEvent[]>([]);
     const [activists, setActivists] = useState<any[]>([]); // New Activist Layer
     const [loading, setLoading] = useState(true);
+    const [selectedEvent, setSelectedEvent] = useState<any>(null);
+    const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
     // Color scale for magnitude
     const colorScale = scaleLinear<string>()
