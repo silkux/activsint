@@ -52,7 +52,7 @@ const GlobeViz: React.FC = () => {
             await new Promise(r => setTimeout(r, 700));
 
             addLog("FEED: NASA EONET ONLINE.");
-            addLog("FEED: RSS REAL-TIME NEWS READY.");
+            addLog("FEED: ACTIVSINT REAL-TIME NEWS READY.");
             await new Promise(r => setTimeout(r, 600));
 
             addLog("SEARCHING FOR ANIMAL ACTIVISM INCIDENTS...");
@@ -183,9 +183,31 @@ const GlobeViz: React.FC = () => {
 
             {/* HUD / Glass Overlay */}
             <div className="absolute top-4 left-4 z-30 p-4 rounded-none border-l-4 border-primary bg-black/40 backdrop-blur-md w-80 shadow-[0_0_15px_rgba(255,0,255,0.2)]">
-                <h1 className="text-primary font-bold text-xl tracking-widest uppercase mb-2 font-display drop-shadow-md">
-                    OSINT <span className="text-secondary">GLOBE</span>
+                <h1 className="text-primary font-bold text-2xl tracking-widest uppercase mb-2 font-display drop-shadow-[0_0_8px_rgba(0,255,255,0.5)]">
+                    ACTIV<span className="text-secondary">SINT</span>
                 </h1>
+
+                {/* PROJECT MISSION */}
+                <div className="mb-4 p-2 bg-primary/5 border border-primary/20 rounded text-[10px] leading-relaxed text-white/70 italic font-mono">
+                    <span className="text-primary font-bold">MISSION:</span> To transform global activism data into actionable intelligence. By monitoring animal rights movements in real-time, we empower defenders of the voiceless.
+                </div>
+
+                {/* MOBILIZATION SIMULATOR */}
+                <div className="mb-4 p-3 bg-accent/10 border-l-2 border-accent rounded-r font-mono text-[10px] text-accent/90">
+                    <div className="font-bold flex items-center gap-1 mb-1">
+                        <span className="animate-pulse text-xs">⚡</span> MOBILIZATION SIMULATOR
+                    </div>
+                    <p className="italic leading-tight">
+                        "If you are in <span className="text-white">New York</span> on <span className="text-white">Dec 20th</span>,
+                        you can be part of the <span className="text-primary">Anti-Fur March</span> near 5th Ave.
+                        Tactical alignment: <span className="text-green-400">HIGH</span>."
+                    </p>
+                </div>
+
+                {/* PROJECT MISSION (THE WHY) */}
+                <div className="mb-4 p-2 bg-primary/5 border border-primary/20 rounded text-[10px] leading-relaxed text-white/70 italic font-mono">
+                    <span className="text-primary font-bold">MISSION:</span> To transform global activism data into actionable intelligence. By monitoring animal rights movements and ecological shifts in real-time, we empower defenders of the voiceless with the tactical overview needed for a just future.
+                </div>
 
                 {/* Navigation */}
                 <a href="/explorer" className="block mb-4 text-xs text-secondary hover:text-white font-mono uppercase tracking-wider">
@@ -197,13 +219,17 @@ const GlobeViz: React.FC = () => {
                     <span className="animate-pulse text-accent">● REC</span>
                 </div>
                 <div className="mt-2 text-xs font-mono text-white/80 space-y-1">
-                    <div className="flex justify-between">
-                        <span>EVENTS DETECTED:</span>
+                    <div className="flex justify-between border-b border-white/5 pb-1">
+                        <span>EVENTS:</span>
                         <span className="text-primary font-bold">{data.length}</span>
                     </div>
-                    <div className="flex justify-between text-green-400">
-                        <span>ACTIVE AGENTS:</span>
-                        <span className="font-bold">{activists.length}</span>
+                    <div className="flex justify-between border-b border-white/5 pb-1">
+                        <span>AGENTS:</span>
+                        <span className="text-green-400 font-bold">{activists.length}</span>
+                    </div>
+                    <div className="flex justify-between text-[10px]">
+                        <span className="opacity-50 text-secondary">THREAT LEVEL:</span>
+                        <span className="text-green-400 font-bold">STABLE</span>
                     </div>
                 </div>
 
