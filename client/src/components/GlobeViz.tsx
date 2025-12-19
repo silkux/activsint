@@ -7,6 +7,7 @@ import { scaleLinear } from 'd3-scale';
 const GlobeViz: React.FC = () => {
     const globeEl = useRef<GlobeMethods | undefined>(undefined);
     const [data, setData] = useState<OsintEvent[]>([]);
+    const [activists, setActivists] = useState<any[]>([]); // New Activist Layer
     const [loading, setLoading] = useState(true);
 
     // Color scale for magnitude
@@ -18,6 +19,23 @@ const GlobeViz: React.FC = () => {
     const [bootLogs, setBootLogs] = useState<string[]>([]);
 
     const addLog = (msg: string) => setBootLogs(prev => [...prev, `> ${msg}`]);
+
+    // SIMULATION: Fake real-time users connecting
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const newActivist = {
+                id: `user-${Date.now()}`,
+                lat: (Math.random() - 0.5) * 160, // Bias towards central latitudes
+                lng: (Math.random() - 0.5) * 360,
+                type: 'activist',
+                title: 'Active Agent',
+                magnitude: 0.5
+            };
+            setActivists(prev => [...prev.slice(-20), newActivist]); // Keep last 20 users
+        }, 2000); // New user every 2 seconds
+
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         let mounted = true;
@@ -39,7 +57,7 @@ const GlobeViz: React.FC = () => {
                     addLog(`DATA STREAM ESTABLISHED: ${events.length} EVENTS`);
                     await new Promise(r => setTimeout(r, 800));
 
-                    addLog("OPTIMIZING GEOMETRY MESH...");
+                    addLog("SCANNING FOR ACTIVE OPERATIVES...");
                     await new Promise(r => setTimeout(r, 800));
 
                     // OPTIMIZATION: Limit to top 50 recent events
@@ -72,9 +90,11 @@ const GlobeViz: React.FC = () => {
         return () => { mounted = false; };
     }, []);
 
-    // OPTIMIZATION: Memoized data processing prevents re-calculation on every frame
-    const ringsData = React.useMemo(() => data, [data]);
-    const pointsData = React.useMemo(() => data, [data]);
+    // Merge Events and Activists for rendering
+    const pointsData = React.useMemo(() => [...data, ...activists], [data, activists]);
+
+    // Rings only for critical events (Magenta) and fresh activists (Green)
+    const ringsData = React.useMemo(() => [...data, ...activists], [data, activists]);
 
     return (
         <div className="relative w-full h-screen bg-black overflow-hidden flex flex-col">
@@ -114,18 +134,20 @@ const GlobeViz: React.FC = () => {
                 pointsData={pointsData}
                 pointLat="lat"
                 pointLng="lng"
-                pointColor={() => '#00ffff'} // CYAN POINTS
-                pointAltitude={(d: any) => d.magnitude ? d.magnitude * 0.05 : 0.1}
-                pointRadius={0.4} // Slightly smaller points
+                // COLOR LOGIC: Activists = Neon Green (#00ff00), Events = Cyan (#00ffff)
+                pointColor={(d: any) => d.type === 'activist' ? '#00ff00' : '#00ffff'}
+                pointAltitude={(d: any) => d.type === 'activist' ? 0.02 : (d.magnitude ? d.magnitude * 0.05 : 0.1)}
+                pointRadius={(d: any) => d.type === 'activist' ? 0.2 : 0.4}
                 pointsMerge={true} // Performance critical
 
                 ringsData={ringsData}
                 ringLat="lat"
                 ringLng="lng"
-                ringColor={() => '#ff00ff'} // MAGENTA RINGS
-                ringMaxRadius={1.5} // Smaller rings to avoid screen clutter
+                // RING LOGIC: Activists = Green Pulse, Events = Magenta Pulse
+                ringColor={(d: any) => d.type === 'activist' ? '#00ff00' : '#ff00ff'}
+                ringMaxRadius={(d: any) => d.type === 'activist' ? 0.8 : 1.5}
                 ringPropagationSpeed={1.5}
-                ringRepeatPeriod={800} // Slightly faster pulse but less overlap
+                ringRepeatPeriod={800}
 
                 onPointHover={(point: any) => {
                     // Handle tooltip or logic here if needed
@@ -138,9 +160,9 @@ const GlobeViz: React.FC = () => {
                 labelLat="lat"
                 labelLng="lng"
                 labelText="title"
-                labelSize={1.2}
+                labelSize={(d: any) => d.type === 'activist' ? 0.5 : 1.2}
                 labelDotRadius={0.3}
-                labelColor={() => 'rgba(255, 0, 255, 0.75)'} // Magenta Labels
+                labelColor={(d: any) => d.type === 'activist' ? 'rgba(0, 255, 0, 0.75)' : 'rgba(255, 0, 255, 0.75)'}
                 labelResolution={1} // Lower resolution for labels
             />
 
@@ -159,13 +181,29 @@ const GlobeViz: React.FC = () => {
                     <span>LIVE FEED // NASA EONET</span>
                     <span className="animate-pulse text-accent">● REC</span>
                 </div>
-                <div className="mt-2 text-xs font-mono text-white/80">
-                    EVENTS DETECTED: <span className="text-primary font-bold text-lg">{data.length}</span>
-                    <span className="ml-2 text-secondary text-[10px]">[OPTIMIZED]</span>
+                <div className="mt-2 text-xs font-mono text-white/80 space-y-1">
+                    <div className="flex justify-between">
+                        <span>EVENTS DETECTED:</span>
+                        <span className="text-primary font-bold">{data.length}</span>
+                    </div>
+                    <div className="flex justify-between text-green-400">
+                        <span>ACTIVE AGENTS:</span>
+                        <span className="font-bold">{activists.length}</span>
+                    </div>
                 </div>
 
                 {/* Data Inspector / Scrollable List */}
                 <div className="mt-4 max-h-64 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                    {/* Show Activists at top if recent */}
+                    {activists.slice(-3).reverse().map(activist => (
+                        <div key={activist.id} className="text-[10px] text-green-100/70 border-l-2 border-green-500 bg-green-500/5 p-2 transition-all">
+                            <div className="font-bold text-green-400 truncate uppercase">>> NEW AGENT CONNECTED</div>
+                            <div className="font-mono text-xs opacity-70">
+                                LOC: {activist.lat.toFixed(2)}, {activist.lng.toFixed(2)}
+                            </div>
+                        </div>
+                    ))}
+
                     {data.slice(0, 50).map(event => (
                         <div key={event.id} className="text-[10px] text-cyan-100/70 border-l-2 border-transparent hover:border-accent hover:bg-white/5 p-2 transition-all cursor-crosshair">
                             <div className="font-bold text-primary truncate uppercase">{event.title}</div>
