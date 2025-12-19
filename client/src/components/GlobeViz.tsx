@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import Globe, { GlobeMethods } from 'react-globe.gl';
 import { fetchOsintData, OsintEvent } from '@/services/osintData';
 import { scaleLinear } from 'd3-scale';
+import AskPanel from './AskPanel';
 
 const GlobeViz: React.FC = () => {
     const globeEl = useRef<GlobeMethods | undefined>(undefined);
@@ -98,6 +98,9 @@ const GlobeViz: React.FC = () => {
 
     return (
         <div className="relative w-full h-screen bg-black overflow-hidden flex flex-col">
+
+            {/* AskPanel (Intelligence Layer) */}
+            <AskPanel events={data} />
 
             {/* Interactive Boot Sequence */}
             {loading && (
@@ -197,7 +200,7 @@ const GlobeViz: React.FC = () => {
                     {/* Show Activists at top if recent */}
                     {activists.slice(-3).reverse().map(activist => (
                         <div key={activist.id} className="text-[10px] text-green-100/70 border-l-2 border-green-500 bg-green-500/5 p-2 transition-all">
-                            <div className="font-bold text-green-400 truncate uppercase">>> NEW AGENT CONNECTED</div>
+                            <div className="font-bold text-green-400 truncate uppercase">{'>>'} NEW AGENT CONNECTED</div>
                             <div className="font-mono text-xs opacity-70">
                                 LOC: {activist.lat.toFixed(2)}, {activist.lng.toFixed(2)}
                             </div>
