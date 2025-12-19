@@ -2,8 +2,18 @@
     "framework": "vite",
     "rewrites": [
         {
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
+        },
+        {
             "source": "/(.*)",
-            "destination": "/"
+            "destination": "/index.html"
         }
-    ]
+    ],
+    "functions": {
+        "api/**/*.ts": {
+            "memory": 1024,
+            "maxDuration": 10
+        }
+    }
 }
