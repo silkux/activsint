@@ -98,5 +98,3 @@ const MOCK_DATA: OsintEvent[] = [
   { id: 'mock4', title: 'Glacier Melt Observation', category: 'Scientific', date: new Date().toISOString(), lat: 64.2008, lng: -149.4937, magnitude: 2, source: 'MOCK' },
   { id: 'mock5', title: 'Solar Farm Projec', category: 'Tech', date: new Date().toISOString(), lat: 31.0461, lng: 34.8516, magnitude: 3, source: 'MOCK' }
 ];
-  }
-}
