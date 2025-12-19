@@ -41,30 +41,41 @@ const GlobeViz: React.FC = () => {
         let mounted = true;
 
         const loadData = async () => {
-            // BOOT SEQUENCE VISUALIZATION
-            addLog("INITIALIZING SYSTEM...");
-            await new Promise(r => setTimeout(r, 600));
+            // EXTENDED STORYTELLING BOOT SEQUENCE
+            addLog("INITIALIZING NEURAL LINK...");
+            await new Promise(r => setTimeout(r, 800));
 
             addLog("ESTABLISHING SECURE CONNECTION...");
             await new Promise(r => setTimeout(r, 600));
 
-            addLog("CONNECTING TO NASA EONET SATELLITE FEED...");
+            addLog("SCANNING GLOBAL SATELLITE ARRAYS...");
+            await new Promise(r => setTimeout(r, 700));
+
+            addLog("FEED: NASA EONET ONLINE.");
+            addLog("FEED: RSS REAL-TIME NEWS READY.");
+            await new Promise(r => setTimeout(r, 600));
+
+            addLog("SEARCHING FOR ANIMAL ACTIVISM INCIDENTS...");
+            await new Promise(r => setTimeout(r, 900));
 
             try {
                 const events = await fetchOsintData();
 
                 if (mounted) {
-                    addLog(`DATA STREAM ESTABLISHED: ${events.length} EVENTS`);
+                    addLog(`DATA ACQUIRED: ${events.length} CRITICAL EVENTS FOUND.`);
                     await new Promise(r => setTimeout(r, 800));
 
-                    addLog("SCANNING FOR ACTIVE OPERATIVES...");
-                    await new Promise(r => setTimeout(r, 800));
+                    addLog("DETECTING LATENT AGENTS IN YOUR PROXIMITY...");
+                    await new Promise(r => setTimeout(r, 1000));
 
-                    // OPTIMIZATION: Limit to top 50 recent events
+                    addLog("ANALYZING FUTURE VECTORS...");
+                    addLog("QUERY PREDICTION: [WHERE ARE YOU?] [NEWS HERE]");
+                    await new Promise(r => setTimeout(r, 1200));
+
                     const recentEvents = events.slice(0, 50);
                     setData(recentEvents);
 
-                    addLog("RENDERING GEOSPATIAL INTERFACE...");
+                    addLog("GENERATING GEOSPATIAL INTERFACE...");
                     await new Promise(r => setTimeout(r, 500));
 
                     setLoading(false);
