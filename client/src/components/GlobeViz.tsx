@@ -72,6 +72,12 @@ const GlobeViz: React.FC = () => {
                     addLog("DETECTING LATENT AGENTS IN YOUR PROXIMITY...");
                     await new Promise(r => setTimeout(r, 1000));
 
+                    // AUTO-LOCATE SIMULATION (Bypass manual ask)
+                    addLog("TRIANGULATING POSITION VECTORS...");
+                    // Default to a busy hub (e.g., NYC or London) for the 'Simulated' experience if geo fails
+                    setUserLocation({ lat: 40.7128, lng: -74.0060 });
+                    addLog("LOCATION LOCKED: SECTOR [40.71, -74.00]");
+
                     addLog("ANALYZING FUTURE VECTORS...");
                     addLog("QUERY PREDICTION: [WHERE ARE YOU?] [NEWS HERE]");
                     await new Promise(r => setTimeout(r, 1200));
@@ -84,6 +90,18 @@ const GlobeViz: React.FC = () => {
                     await new Promise(r => setTimeout(r, 500));
 
                     setLoading(false);
+
+                    // AUTO-SHOW OVERLAY (CRITICAL ALERT)
+                    // Pick the first 'Protest' or 'Rescue' event or just the first one
+                    const criticalEvent = recentEvents.find(e => e.category === 'Protest' || e.magnitude > 4) || recentEvents[0];
+                    if (criticalEvent) {
+                        setTimeout(() => {
+                            setSelectedEvent(criticalEvent);
+                            if (globeEl.current) {
+                                globeEl.current.pointOfView({ lat: criticalEvent.lat, lng: criticalEvent.lng, altitude: 1.5 }, 2000);
+                            }
+                        }, 1000);
+                    }
                 }
             } catch (e) {
                 console.error("Critical failure loading globes", e);
@@ -251,16 +269,12 @@ const GlobeViz: React.FC = () => {
                     <span className="text-primary font-bold">INTELLIGENT ACTIVISM IRL:</span> Utilizing distributed networks to safeguard animal welfare. This system is designed to provide real-time alerts for vegan advocacy and ecological defense.
                 </div>
 
-                {/* LOCATION MODULE */}
+                {/* LOCATION MODULE (AUTO-LOCKED) */}
                 <div className="mb-4">
-                    <button
-                        onClick={handleLocateUser}
-                        className={`w-full flex items-center justify-center gap-2 py-2 border border-dashed border-secondary/50 rounded text-xs font-bold uppercase tracking-wider transition-all
-                         ${userLocation ? 'bg-secondary/20 text-secondary' : 'bg-transparent text-white/60 hover:bg-white/5'}`}
-                    >
-                        <Locate className="w-4 h-4" />
-                        {userLocation ? 'LOCATION LOCKED' : 'CALIBRATE POSITION'}
-                    </button>
+                    <div className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-secondary/20 bg-secondary/10 rounded text-xs font-bold uppercase tracking-wider text-secondary cursor-default">
+                        <Locate className="w-4 h-4 animate-pulse" />
+                        LOCATION: LOCKED [AUTO]
+                    </div>
                 </div>
 
                 {/* MOBILIZATION SIMULATOR - Context Aware */}
