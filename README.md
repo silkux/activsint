@@ -1,19 +1,19 @@
 # 🌍 Latent OSINT Globe
 > *Real-time Open Source Intelligence Visualization from the Deep Web*
 
-![Vaporwave Globe](https://img.shields.io/badge/Aesthetic-Vaporwave%20%2F%20Cyber-ff00ff)
+![Tactical UI](https://img.shields.io/badge/Aesthetic-Tactical%20OSINT-blue)
 ![Status](https://img.shields.io/badge/System-ONLINE-00ffff)
 ![Data Source](https://img.shields.io/badge/Data-NASA%20EONET-orange)
 
 ## 📡 The Concept
 **Latent OSINT Globe** is a futuristic, immersive visualization tool designed to track and display global activism, climate events, and conflict data in real-time. 
 
-Built with a **Cyberpunk/Vaporwave aesthetic**, it transforms raw data into a tactical "Neural Link" interface, allowing analysts and users to monitor planetary events through a "Latent" view—where data is not just read, but experienced.
+Built with an **Advanced Tactical aesthetic**, it transforms raw data into a tactical "Neural Link" interface, allowing analysts and users to monitor planetary events through a "Latent" view—where data is not just read, but experienced.
 
 ## 🚀 Features
 -   **3D Geospatial Engine**: Powered by `react-globe.gl` and Three.js.
 -   **Real-Time Data Feed**: Live connection to NASA's EONET (Earth Observatory Natural Event Tracker).
--   **Vaporwave UI**: Custom Neon/Retro-Futuristic interface with CRT scanlines, holographic grids, and 'Orbitron' typography.
+-   **Tactical UI**: Custom Neon interface with CRT scanlines, holographic grids, and 'Orbitron' typography.
 -   **Tactical HUD**: Heads-Up Display for event metrics, data inspection, and system status.
 -   **Performance Optimized**: Capable of rendering live datasets without browser saturation via memoization and geometric simplification.
 
@@ -42,7 +42,7 @@ pnpm dev
 
 ## 🔮 Roadmap
 -   [x] **Phase 1**: Core Engine & NASA Integration (Complete)
--   [x] **Phase 2**: Vaporwave UI Overhaul (Complete)
+-   [x] **Phase 2**: Visual Interface Overhaul (Complete)
 -   [ ] **Phase 3**: RSS News Integration (In Progress)
 -   [ ] **Phase 4**: "Ask Weaviate" RAG Interface (Planned)
 
