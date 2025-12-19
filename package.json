@@ -1,6 +1,6 @@
-{
-  "name": "visualizador-activismo",
+  "name": "latent-osint-globe",
   "version": "1.0.0",
+  "description": "Real-time 3D OSINT visualization with Vaporwave aesthetic",
   "type": "module",
   "license": "MIT",
   "scripts": {

@@ -63,10 +63,10 @@ export default function Home() {
             <div className="text-4xl">🌍</div>
             <div>
               <h1 className="text-4xl font-bold text-gray-900">
-                Visualizador de Activismo
+                Activism Visualizer
               </h1>
               <p className="text-gray-600 mt-1">
-                Identifica momentos clave donde el activismo es más efectivo
+                Identify key moments where activism is most effective
               </p>
             </div>
           </div>
@@ -89,11 +89,11 @@ export default function Home() {
 
             {/* Summary Stats */}
             <div className="mt-6 bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-4">Resumen</h3>
+              <h3 className="font-bold text-gray-900 mb-4">Summary</h3>
               <div className="space-y-3">
                 <div>
                   <p className="text-xs text-gray-600 uppercase font-semibold">
-                    Eventos Mostrados
+                    Events Shown
                   </p>
                   <p className="text-2xl font-bold text-blue-600">
                     {filteredEvents.length}
@@ -101,7 +101,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-600 uppercase font-semibold">
-                    Activistas Totales
+                    Total Activists
                   </p>
                   <p className="text-2xl font-bold text-green-600">
                     {filteredEvents
@@ -111,7 +111,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-600 uppercase font-semibold">
-                    Impacto Promedio
+                    Avg. Impact
                   </p>
                   <p className="text-2xl font-bold text-orange-600">
                     {Math.round(
@@ -150,7 +150,7 @@ export default function Home() {
         {/* Mobile Layout Info */}
         <div className="lg:hidden mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-900">
-            💡 Para una mejor experiencia, visualiza este sitio en una pantalla más grande
+            💡 For the best experience, view this site on a larger screen
           </p>
         </div>
       </main>
@@ -160,32 +160,30 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-bold text-gray-900 mb-2">Sobre este Visualizador</h3>
+              <h3 className="font-bold text-gray-900 mb-2">About this Visualizer</h3>
               <p className="text-sm text-gray-600">
-                Una herramienta para identificar momentos clave de alto impacto social donde el
-                activismo puede ser más efectivo y preciso.
+                A tool to identify key social impact moments where activism can be most effective and precise.
               </p>
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 mb-2">Variables de Impacto</h3>
+              <h3 className="font-bold text-gray-900 mb-2">Impact Variables</h3>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>📺 Cobertura Mediática</li>
-                <li>👥 Movilización Activista</li>
-                <li>🌍 Conciencia Pública</li>
-                <li>✅ Potencial de Éxito</li>
+                <li>📺 Media Coverage</li>
+                <li>👥 Activist Mobilization</li>
+                <li>🌍 Public Awareness</li>
+                <li>✅ Success Potential</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 mb-2">Fuentes de Datos</h3>
+              <h3 className="font-bold text-gray-900 mb-2">Data Sources</h3>
               <p className="text-sm text-gray-600">
-                Información recopilada de medios internacionales, organizaciones activistas y
-                reportes de impacto verificados.
+                Information gathered from international media, activist organizations, and verified impact reports.
               </p>
             </div>
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-600">
             <p>
-              Visualizador de Activismo © 2025 | Diseñado para maximizar el impacto social
+              Activism Visualizer © 2025 | Designed to maximize social impact
             </p>
           </div>
         </div>
