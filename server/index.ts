@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  const staticPath = process.env.NODE_ENV === "production" ? path.resolve(__dirname) : path.resolve(__dirname, "..", "dist");
+  const staticPath = process.env.NODE_ENV === "production" ? path.resolve(__dirname, "public") : path.resolve(__dirname, "..", "dist", "public");
 
   app.use(express.static(staticPath));
 
