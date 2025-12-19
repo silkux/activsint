@@ -99,18 +99,22 @@ const GlobeViz: React.FC = () => {
                 </div>
             )}
 
+            {/* CRT SCANLINE & GRID OVERLAY */}
+            <div className="absolute inset-0 z-20 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]"></div>
+            <div className="absolute inset-0 z-10 pointer-events-none opacity-10" style={{ backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, .3) 25%, rgba(0, 255, 255, .3) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, .3) 75%, rgba(0, 255, 255, .3) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, .3) 25%, rgba(0, 255, 255, .3) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, .3) 75%, rgba(0, 255, 255, .3) 76%, transparent 77%, transparent)', backgroundSize: '50px 50px' }}></div>
+
             {/* Actual Globe - Optimized Configuration */}
             <Globe
                 ref={globeEl}
                 // OPTIMIZATION: Use lower res texture if possible, but safe defaults for now.
                 // Removed night-sky.png background for cleaner look / less VRAM usage if needed.
                 globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-                backgroundColor="#000000" // Pure black background is faster than image
+                backgroundColor="#050014" // Deep Indigo Void from CSS
 
                 pointsData={pointsData}
                 pointLat="lat"
                 pointLng="lng"
-                pointColor={() => '#ff3333'} // constant red for now, or use colorScale
+                pointColor={() => '#00ffff'} // CYAN POINTS
                 pointAltitude={(d: any) => d.magnitude ? d.magnitude * 0.05 : 0.1}
                 pointRadius={0.4} // Slightly smaller points
                 pointsMerge={true} // Performance critical
@@ -118,52 +122,55 @@ const GlobeViz: React.FC = () => {
                 ringsData={ringsData}
                 ringLat="lat"
                 ringLng="lng"
-                ringColor={() => '#ff0000'}
+                ringColor={() => '#ff00ff'} // MAGENTA RINGS
                 ringMaxRadius={1.5} // Smaller rings to avoid screen clutter
                 ringPropagationSpeed={1.5}
                 ringRepeatPeriod={800} // Slightly faster pulse but less overlap
+
                 onPointHover={(point: any) => {
                     // Handle tooltip or logic here if needed
                     if (globeEl.current) {
                         globeEl.current.controls().autoRotate = !point;
                     }
                 }}
+
                 labelsData={pointsData}
                 labelLat="lat"
                 labelLng="lng"
                 labelText="title"
                 labelSize={1.2}
                 labelDotRadius={0.3}
-                labelColor={() => 'rgba(255, 255, 255, 0.75)'}
+                labelColor={() => 'rgba(255, 0, 255, 0.75)'} // Magenta Labels
                 labelResolution={1} // Lower resolution for labels
             />
 
             {/* HUD / Glass Overlay */}
-            <div className="absolute top-4 left-4 z-10 p-4 rounded-xl border border-white/10 bg-black/20 backdrop-blur-md w-80">
-                <h1 className="text-white font-bold text-lg tracking-widest uppercase mb-2">
-                    OSINT <span className="text-primary">GLOBE</span>
+            <div className="absolute top-4 left-4 z-30 p-4 rounded-none border-l-4 border-primary bg-black/40 backdrop-blur-md w-80 shadow-[0_0_15px_rgba(255,0,255,0.2)]">
+                <h1 className="text-primary font-bold text-xl tracking-widest uppercase mb-2 font-display drop-shadow-md">
+                    OSINT <span className="text-secondary">GLOBE</span>
                 </h1>
 
                 {/* Navigation */}
-                <a href="/explorer" className="block mb-4 text-xs text-primary hover:text-accent font-mono underline decoration-dotted">
-                    [ ACCESS LEGACY EXPLORER ]
+                <a href="/explorer" className="block mb-4 text-xs text-secondary hover:text-white font-mono uppercase tracking-wider">
+                    [ &gt;&gt; ACCESS LEGACY EXPLORER ]
                 </a>
 
-                <div className="text-xs text-white/50 font-mono mt-1 border-t border-white/10 pt-2">
-                    LIVE FEED // NASA EONET
+                <div className="text-xs text-white/50 font-mono mt-1 border-t border-white/10 pt-2 flex justify-between">
+                    <span>LIVE FEED // NASA EONET</span>
+                    <span className="animate-pulse text-accent">● REC</span>
                 </div>
                 <div className="mt-2 text-xs font-mono text-white/80">
-                    EVENTS DETECTED: <span className="text-accent">{data.length}</span>
-                    <span className="ml-2 text-green-500 text-[10px]">[OPTIMIZED]</span>
+                    EVENTS DETECTED: <span className="text-primary font-bold text-lg">{data.length}</span>
+                    <span className="ml-2 text-secondary text-[10px]">[OPTIMIZED]</span>
                 </div>
 
                 {/* Data Inspector / Scrollable List */}
-                <div className="mt-4 max-h-48 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                <div className="mt-4 max-h-64 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
                     {data.slice(0, 50).map(event => (
-                        <div key={event.id} className="text-[10px] text-white/70 bg-white/5 p-2 rounded hover:bg-white/10 transition">
-                            <div className="font-bold text-primary truncate">{event.title}</div>
-                            <div className="flex justify-between mt-1">
-                                <span>{event.category}</span>
+                        <div key={event.id} className="text-[10px] text-cyan-100/70 border-l-2 border-transparent hover:border-accent hover:bg-white/5 p-2 transition-all cursor-crosshair">
+                            <div className="font-bold text-primary truncate uppercase">{event.title}</div>
+                            <div className="flex justify-between mt-1 font-mono text-xs">
+                                <span className="text-secondary">{event.category}</span>
                                 <span>{new Date(event.date).toLocaleDateString()}</span>
                             </div>
                         </div>
