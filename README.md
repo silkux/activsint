@@ -10,18 +10,24 @@
 
 Built with an **Advanced Tactical aesthetic**, it transforms raw data into a tactical "Neural Link" interface, allowing analysts and users to monitor planetary events through a "Latent" view—where data is not just read, but experienced.
 
+## 🧠 Intelligent Activism IRL (Vegan & Eco Defense)
+**ACTIVSINT** isn't just a map; it's a tool for **Intelligent Activism**. By leveraging OSINT (Open Source Intelligence), we provide:
+-   **Real-Time Alerts**: Receive notification vectors when animal rights violations or ecological crises are detected in your sector.
+-   **Mobilization Simulator**: Our "If/Then" logic helps you understand where your presence can have the most impact (e.g., *Protests in your city*).
+-   **Vegan Advocacy Data**: Specific tracking of animal welfare incidents to coordinate rapid responses for the voiceless.
+
 ## 🚀 Features
--   **3D Geospatial Engine**: Powered by `react-globe.gl` and Three.js.
--   **Real-Time Data Feed**: Live connection to NASA's EONET (Earth Observatory Natural Event Tracker).
+-   **3D Geospatial Engine**: Powered by `react-globe.gl` and Three.js (Optimized for Low-RAM usage).
+-   **Real-Time Data Feed**: Live connection to NASA's EONET and Global RSS News Feeds.
 -   **Tactical UI**: Custom Neon interface with CRT scanlines, holographic grids, and 'Orbitron' typography.
--   **Tactical HUD**: Heads-Up Display for event metrics, data inspection, and system status.
--   **Performance Optimized**: Capable of rendering live datasets without browser saturation via memoization and geometric simplification.
+-   **"Where Are You" Intelligence**: Geolocation features to calibrate the activist map to your physical location.
+-   **Performance Optimized**: Capable of rendering 500+ live datasets on mobile and desktop without browser saturation.
 
 ## 🛠️ Technology Stack
 -   **Core**: React 19, TypeScript, Vite
 -   **3D/Viz**: React Globe GL, Three.js, D3 Scale
--   **Styling**: TailwindCSS (v4), Custom CSS Variables (Neon Palette)
--   **State/Data**: React Hooks, Fetch API
+-   **Styling**: TailwindCSS (v4), Framer Motion (Animations)
+-   **Intelligent Layer**: Geolocation API, RSS Parsing, Weaviate (Planned)
 
 ## ⚡ Deployment
 ### Vercel / Netlify

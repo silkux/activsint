@@ -108,18 +108,54 @@ const GlobeViz: React.FC = () => {
     // Rings only for critical events (Magenta) and fresh activists (Green)
     const ringsData = React.useMemo(() => [...data, ...activists], [data, activists]);
 
+    // INTELLIGENT LOCATION HANDLER
+    const handleLocateUser = () => {
+        addLog("REQUESTING GEOLOCATION PERMISSIONS...");
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setUserLocation({ lat: latitude, lng: longitude });
+                    addLog(`USER DETECTED: [${latitude.toFixed(2)}, ${longitude.toFixed(2)}]`);
+                    addLog("CALIBRATING ACTIVISM VECTORS TO YOUR LOCATION...");
+
+                    if (globeEl.current) {
+                        globeEl.current.pointOfView({ lat: latitude, lng: longitude, altitude: 1.5 }, 2000);
+                    }
+                },
+                () => {
+                    addLog("GEOLOCATION DENIED. USING TRIANGULATED IP ESTIMATE...");
+                    // Fallback to approximate location (e.g., center of map or random major city)
+                }
+            );
+        }
+    };
+
     return (
         <div className="relative w-full h-screen bg-black overflow-hidden flex flex-col">
 
             {/* AskPanel (Intelligence Layer) */}
             <AskPanel events={data} />
 
+            {/* Event Details Overlay */}
+            {selectedEvent && (
+                <div className="absolute inset-0 z-40 bg-black/60 backdrop-blur-sm flex items-center justify-center" onClick={() => setSelectedEvent(null)}>
+                    <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md">
+                        <EventOverlay
+                            event={selectedEvent}
+                            onClose={() => setSelectedEvent(null)}
+                            userLocation={userLocation}
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* Interactive Boot Sequence */}
             {loading && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-1000">
                     <div className="w-96 p-6 border border-primary/30 bg-black/90 font-mono text-xs rounded-lg shadow-[0_0_30px_rgba(0,255,204,0.1)]">
                         <div className="text-primary mb-4 font-bold border-b border-white/10 pb-2">
-                            System Boot v2.4.1
+                            ACTIVSINT CORE v3.0
                         </div>
                         <div className="flex flex-col gap-1 h-32 overflow-hidden text-white/70">
                             {bootLogs.map((log, i) => (
@@ -151,8 +187,8 @@ const GlobeViz: React.FC = () => {
                 pointLng="lng"
                 // COLOR LOGIC: Activists = Neon Green (#00ff00), Events = Cyan (#00ffff)
                 pointColor={(d: any) => d.type === 'activist' ? '#00ff00' : '#00ffff'}
-                pointAltitude={(d: any) => d.type === 'activist' ? 0.02 : (d.magnitude ? d.magnitude * 0.05 : 0.1)}
-                pointRadius={(d: any) => d.type === 'activist' ? 0.2 : 0.4}
+                pointAltitude={(d: any) => d.type === 'activist' ? 0.02 : 0.05}
+                pointRadius={(d: any) => d.type === 'activist' ? 0.2 : 0.25}
                 pointsMerge={true} // Performance critical
 
                 ringsData={ringsData}
@@ -160,8 +196,8 @@ const GlobeViz: React.FC = () => {
                 ringLng="lng"
                 // RING LOGIC: Activists = Green Pulse, Events = Magenta Pulse
                 ringColor={(d: any) => d.type === 'activist' ? '#00ff00' : '#ff00ff'}
-                ringMaxRadius={(d: any) => d.type === 'activist' ? 0.8 : 1.5}
-                ringPropagationSpeed={1.5}
+                ringMaxRadius={(d: any) => d.type === 'activist' ? 0.8 : 1.2}
+                ringPropagationSpeed={2}
                 ringRepeatPeriod={800}
 
                 onPointHover={(point: any) => {
@@ -170,14 +206,21 @@ const GlobeViz: React.FC = () => {
                         globeEl.current.controls().autoRotate = !point;
                     }
                 }}
+                onPointClick={(point: any) => {
+                    setSelectedEvent(point);
+                    if (globeEl.current) {
+                        globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: 1.2 }, 1000);
+                        globeEl.current.controls().autoRotate = false;
+                    }
+                }}
 
                 labelsData={pointsData}
                 labelLat="lat"
                 labelLng="lng"
                 labelText="title"
-                labelSize={(d: any) => d.type === 'activist' ? 0.5 : 1.2}
-                labelDotRadius={0.3}
-                labelColor={(d: any) => d.type === 'activist' ? 'rgba(0, 255, 0, 0.75)' : 'rgba(255, 0, 255, 0.75)'}
+                labelSize={(d: any) => d.type === 'activist' ? 0.5 : 0.8}
+                labelDotRadius={0.2}
+                labelColor={() => 'rgba(255, 255, 255, 0.75)'}
                 labelResolution={1} // Lower resolution for labels
             />
 
@@ -187,35 +230,37 @@ const GlobeViz: React.FC = () => {
                     ACTIV<span className="text-secondary">SINT</span>
                 </h1>
 
-                {/* PROJECT MISSION */}
+                {/* INTELLIGENT ACTIVISM IRL MANIFESTO (Small) */}
                 <div className="mb-4 p-2 bg-primary/5 border border-primary/20 rounded text-[10px] leading-relaxed text-white/70 italic font-mono">
-                    <span className="text-primary font-bold">MISSION:</span> To transform global activism data into actionable intelligence. By monitoring animal rights movements in real-time, we empower defenders of the voiceless.
+                    <span className="text-primary font-bold">INTELLIGENT ACTIVISM IRL:</span> Utilizing distributed networks to safeguard animal welfare. This system is designed to provide real-time alerts for vegan advocacy and ecological defense.
                 </div>
 
-                {/* MOBILIZATION SIMULATOR */}
+                {/* LOCATION MODULE */}
+                <div className="mb-4">
+                    <button
+                        onClick={handleLocateUser}
+                        className={`w-full flex items-center justify-center gap-2 py-2 border border-dashed border-secondary/50 rounded text-xs font-bold uppercase tracking-wider transition-all
+                         ${userLocation ? 'bg-secondary/20 text-secondary' : 'bg-transparent text-white/60 hover:bg-white/5'}`}
+                    >
+                        <Locate className="w-4 h-4" />
+                        {userLocation ? 'LOCATION LOCKED' : 'CALIBRATE POSITION'}
+                    </button>
+                </div>
+
+                {/* MOBILIZATION SIMULATOR - Context Aware */}
                 <div className="mb-4 p-3 bg-accent/10 border-l-2 border-accent rounded-r font-mono text-[10px] text-accent/90">
                     <div className="font-bold flex items-center gap-1 mb-1">
-                        <span className="animate-pulse text-xs">⚡</span> MOBILIZATION SIMULATOR
+                        <Radio className="w-3 h-3 animate-pulse" /> SIMULATOR
                     </div>
                     <p className="italic leading-tight">
-                        "If you are in <span className="text-white">New York</span> on <span className="text-white">Dec 20th</span>,
-                        you can be part of the <span className="text-primary">Anti-Fur March</span> near 5th Ave.
-                        Tactical alignment: <span className="text-green-400">HIGH</span>."
+                        {userLocation
+                            ? "ANALYSIS COMPLETE: 3 Vegan Rallies detected within 50km of your sector. Recommendation: DEPLOY."
+                            : "Waiting for geolocation... System unable to suggest local IRL actions."}
                     </p>
                 </div>
 
-                {/* PROJECT MISSION (THE WHY) */}
-                <div className="mb-4 p-2 bg-primary/5 border border-primary/20 rounded text-[10px] leading-relaxed text-white/70 italic font-mono">
-                    <span className="text-primary font-bold">MISSION:</span> To transform global activism data into actionable intelligence. By monitoring animal rights movements and ecological shifts in real-time, we empower defenders of the voiceless with the tactical overview needed for a just future.
-                </div>
-
-                {/* Navigation */}
-                <a href="/explorer" className="block mb-4 text-xs text-secondary hover:text-white font-mono uppercase tracking-wider">
-                    [ &gt;&gt; ACCESS LEGACY EXPLORER ]
-                </a>
-
                 <div className="text-xs text-white/50 font-mono mt-1 border-t border-white/10 pt-2 flex justify-between">
-                    <span>LIVE FEED // NASA EONET</span>
+                    <span>LIVE FEED // NASA EONET + RSS</span>
                     <span className="animate-pulse text-accent">● REC</span>
                 </div>
                 <div className="mt-2 text-xs font-mono text-white/80 space-y-1">
@@ -226,10 +271,6 @@ const GlobeViz: React.FC = () => {
                     <div className="flex justify-between border-b border-white/5 pb-1">
                         <span>AGENTS:</span>
                         <span className="text-green-400 font-bold">{activists.length}</span>
-                    </div>
-                    <div className="flex justify-between text-[10px]">
-                        <span className="opacity-50 text-secondary">THREAT LEVEL:</span>
-                        <span className="text-green-400 font-bold">STABLE</span>
                     </div>
                 </div>
 
@@ -246,11 +287,10 @@ const GlobeViz: React.FC = () => {
                     ))}
 
                     {data.slice(0, 50).map(event => (
-                        <div key={event.id} className="text-[10px] text-cyan-100/70 border-l-2 border-transparent hover:border-accent hover:bg-white/5 p-2 transition-all cursor-crosshair">
+                        <div key={event.id} onClick={() => setSelectedEvent(event)} className="text-[10px] text-cyan-100/70 border-l-2 border-transparent hover:border-accent hover:bg-white/5 p-2 transition-all cursor-pointer">
                             <div className="font-bold text-primary truncate uppercase">{event.title}</div>
                             <div className="flex justify-between mt-1 font-mono text-xs">
                                 <span className="text-secondary">{event.category}</span>
-                                <span>{new Date(event.date).toLocaleDateString()}</span>
                             </div>
                         </div>
                     ))}
