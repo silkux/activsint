@@ -72,7 +72,8 @@ const GlobeViz: React.FC = () => {
                     addLog("QUERY PREDICTION: [WHERE ARE YOU?] [NEWS HERE]");
                     await new Promise(r => setTimeout(r, 1200));
 
-                    const recentEvents = events.slice(0, 50);
+                    // Limit to high-impact events for performance
+                    const recentEvents = events.slice(0, 500);
                     setData(recentEvents);
 
                     addLog("GENERATING GEOSPATIAL INTERFACE...");
